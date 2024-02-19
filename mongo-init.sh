@@ -5,7 +5,7 @@ mongosh <<EOF
 db = db.getSiblingDB('control-money')
 
 db.createUser({
-  user: 'user_control_money',
+  user: 'mongo_user',
   pwd: 'secret',
   roles: [
     {
