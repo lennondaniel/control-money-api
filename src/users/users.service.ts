@@ -9,7 +9,7 @@ import { hashPassword } from 'src/helpers/hashPassword';
 export class UsersService {
     constructor(@InjectModel(UserModel.name) private userModel: Model<UserModel>) {}
 
-    async CreateUser(createUserDto: CreateUserDto): Promise<UserModel> {
+    async createUser(createUserDto: CreateUserDto): Promise<UserModel> {
         const user = await this.userModel.findOne({ email: createUserDto.email });
 
         if (user) {
@@ -20,19 +20,12 @@ export class UsersService {
         return createdUser.save();
     }
 
-    async Login(loginDto: LoginDto): Promise<UserModel> {
-        const user = await this.userModel.findOne({ email: loginDto.email }).select('+password');
+    async findOneByEmail(email: string): Promise<UserModel> {
+        const user = await this.userModel.findOne({ email: email });
 
         if (!user) {
             throw new HttpException('User not found', HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
-        const passwordIsCorrect = hashPassword(loginDto.password) === user.password;
-
-        if (!passwordIsCorrect) {
-            throw new HttpException('Icorrect password', HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
         return user;
     }
 }
