@@ -2,11 +2,11 @@ import { Body, HttpException, HttpStatus, Inject, Injectable, Logger } from '@ne
 import { InjectModel } from '@nestjs/mongoose';
 import { UserModel } from './user.model';
 import { Model } from 'mongoose';
-import { CreateUserDto, LoginDto, ResponseUserDto } from 'src/dto/user.dto';
-import { hashPassword } from 'src/helpers/hashPassword';
+import { CreateUserDto } from 'src/dto/user.dto';
+import { UsersInterface } from './users.interface';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements UsersInterface {
     constructor(@InjectModel(UserModel.name) private userModel: Model<UserModel>) {}
 
     async createUser(createUserDto: CreateUserDto): Promise<UserModel> {
