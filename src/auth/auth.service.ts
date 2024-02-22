@@ -10,7 +10,7 @@ export class AuthService {
         private usersService: UsersService,
         private jwtService: JwtService
     ) {}
-    async login(loginDto: LoginDto): Promise<string> {
+    async login(loginDto: LoginDto): Promise<{ access_token: string }> {
         const user = await this.usersService.findOneByEmail(loginDto.email);
 
         if (!user) {
@@ -22,7 +22,9 @@ export class AuthService {
         if (!passwordIsCorrect) {
             throw new HttpException('Incorrect password', HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        const payload = { sub: user.id, email: user.email };
-        return this.jwtService.signAsync(payload);
+        const payload = { user_id: user.id, email: user.email };
+        return {
+            access_token: await this.jwtService.signAsync(payload)
+        };
     }
 }
