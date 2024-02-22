@@ -3,9 +3,10 @@ import { LoginDto } from '../dto/user.dto';
 import { hashPassword } from '../helpers/hashPassword';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthInterface } from './auth.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthInterface {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService
